@@ -1,0 +1,70 @@
+// ======================== Variable ========================
+
+// Colors
+$colorGoldDark: #eaa712;
+$colorGoldLight:  #ffcb57;
+$colorPurpleDark: #553184;
+$colorPurpleLight: #966DCB;
+$colorBlackDark: #333333;
+$colorBlackLight: #3a3a3a;
+$colorWhite:#ffffff;
+$colorBorder: #eeeeee;
+$colorGray:#ededed;
+$colorGrayDark: #666666;
+$colorGrayLight: #999999;
+
+$colorError: #F44336;
+$colorHover: #f2f3f4;
+
+// Font
+$fontScb: 'PS Kittithada 55P', sans-serif;
+$fontScbBold: 'Bold PS Kittithada Font';
+
+// Responsive size
+$tablet-width: 768px;
+$desktop-width: 992px;
+
+// ======================== Mixin ========================
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+// responsive
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+@mixin tablet-only {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
