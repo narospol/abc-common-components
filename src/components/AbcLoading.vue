@@ -1,17 +1,10 @@
 <script>
-export default {
-  props: {
-    loadingImage: {
-      type: String,
-      default: ""
-    }
-  }
-};
+export default {};
 </script>
 
 <template>
   <div class="abc-loading">
-    <img :src="loadingImage" alt="Loading" />
+    <slot />
   </div>
 </template>
 
