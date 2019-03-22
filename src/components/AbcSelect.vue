@@ -200,8 +200,9 @@ export default {
     onDocumentClick(event) {
       const el = this.$refs.selectionControl;
       const target = event.target;
+      // TODO: Fix event target not working in web components
       if (el && el !== target && !el.contains(target)) {
-        this.hide();
+        // this.hide();
       }
     },
     onOpenMenuClicked(isIconClicked) {
@@ -229,18 +230,6 @@ export default {
           this.setInputValueUpdated();
         }
       }
-      // if (isRemove && this.removeCounting === 1) {
-      //   const { data: removeData = "" } = this.selectedItems.pop() || {};
-      //   const index = this.cachedItems.findIndex(x => x.data === removeData);
-      //   if (index !== -1) {
-      //     this.cachedItems[index].selected = false;
-      //   }
-      //   this.removeCounting = 0;
-      // } else if (isRemove) {
-      //   ++this.removeCounting;
-      // } else {
-      //   this.removeCounting = 0;
-      // }
       const items = this.filterItemsWithText(text);
       this.updateSelectionItems(items);
       this.previousSearch = text;
@@ -432,16 +421,18 @@ $colorBorder: #dddddd;
   flex-wrap: wrap;
   flex-direction: column;
   width: 100%;
+  box-sizing: border-box;
   .controls {
     position: relative;
     display: flex;
-    min-height: $controlHeight;
+    height: $controlHeight;
     font-size: 1.5rem;
     line-height: 1.5;
     padding: 0.25rem $dropdownWidth 0.25rem 0.8rem;
     border: 1px solid #ced4da;
     border-radius: 6px;
     background-color: white;
+    box-sizing: border-box;
     &.-error {
       border: 1px solid #f44336;
     }
@@ -463,6 +454,7 @@ $colorBorder: #dddddd;
         padding: 0;
         outline: none;
         border: 0;
+        font-size: 1rem;
       }
     }
     .icon-wrapper {
