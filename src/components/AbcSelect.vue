@@ -421,6 +421,7 @@ $colorBorder: #dddddd;
   flex-wrap: wrap;
   flex-direction: column;
   width: 100%;
+  font-family: $fontScb;
   box-sizing: border-box;
   .controls {
     position: relative;
@@ -454,7 +455,8 @@ $colorBorder: #dddddd;
         padding: 0;
         outline: none;
         border: 0;
-        font-size: 1rem;
+        font-size: 1.5rem;
+        font-family: $fontScb;
       }
     }
     .icon-wrapper {
