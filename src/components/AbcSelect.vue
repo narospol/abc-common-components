@@ -33,6 +33,14 @@ export default {
       type: String,
       default: ""
     },
+    itemHeight: {
+      type: Number,
+      default: 40
+    },
+    numberOfItemDisplay: {
+      type: Number,
+      default: 4
+    },
     value: {
       type: [String, Number, Object, Array],
       default: ""
@@ -185,11 +193,13 @@ export default {
         case "ArrowUp": {
           const index = this.activeIndex;
           this.activeIndex = index > 0 ? index - 1 : index;
+          this.updateSelectionScroll();
           break;
         }
         case "ArrowDown": {
           const index = this.activeIndex;
           this.activeIndex = index < this.selectionItems.length - 1 ? index + 1 : index // eslint-disable-line
+          this.updateSelectionScroll();
           break;
         }
         default:
@@ -199,10 +209,9 @@ export default {
     },
     onDocumentClick(event) {
       const el = this.$refs.selectionControl;
-      const target = event.target;
-      // TODO: Fix event target not working in web components
-      if (el && el !== target && !el.contains(target)) {
-        // this.hide();
+      const isContains = event.path.filter(p => p === el).length > 0;
+      if (el && !isContains) {
+        this.hide();
       }
     },
     onOpenMenuClicked(isIconClicked) {
@@ -270,6 +279,15 @@ export default {
         items = [...filterItems];
       }
       return items;
+    },
+    updateSelectionScroll() {
+      const [activeOption] = this.$refs.options.filter(e => e.className.includes("-active"));
+      if (activeOption) {
+        const itemHeight = activeOption.clientHeight;
+        const scrollTop = itemHeight * this.activeIndex;
+        const virtualList = this.$refs.virtualList;
+        virtualList.$el.scrollTop = scrollTop;
+      }
     },
     updateSelectedItem() {
       this.selectedItems = this.cachedItems.filter(x => x.selected);
@@ -364,37 +382,32 @@ export default {
           @keyup="onTextInputChanged"
         />
       </div>
-      <div class="icon-wrapper" @click="onOpenMenuClicked(true)">
+      <div id="selection-dropdown-icon" class="icon-wrapper" @click="onOpenMenuClicked(true)">
         <div v-if="isLoading" class="spinner">
           <div class="clip"></div>
         </div>
-        <v-icon
-          v-else
-          :class="{ '-flip': isOpen }"
-          name="dropdown"
-          class="icon"
-          scale="1.6"
-        />
+        <v-icon v-else :class="{ '-flip': isOpen }" name="dropdown" class="icon" scale="1.6" />
       </div>
-      <div
-        v-if="isOpen"
-        :style="{ top: `${positionOfSelection}px` }"
-        class="selection"
-      >
+      <div v-if="isOpen" :style="{ top: `${positionOfSelection}px` }" class="selection">
         <div v-if="selectionItems.length === 0" class="selection-list-empty">
           No data
         </div>
-        <div v-else class="selection-list">
-          <virtual-list :size="40" :remain="6" :tobottom="onNextPage">
+        <div v-else class="selection-list" :style="{ maxHeight: `${itemHeight * numberOfItemDisplay}px` }">
+          <virtual-list ref="virtualList" :size="itemHeight" :remain="numberOfItemDisplay" :tobottom="onNextPage">
             <div
+              ref="options"
               v-for="(item, index) in selectionItems"
               :key="index"
+              :style="{ height: `${itemHeight}px` }"
               :class="{ '-active': activeIndex === index }"
               class="select-item"
               @click="onItemSelected(item)"
             >
-              <div :class="{ '-selected': item.selected }" class="item-label">
-                {{ getText(item.data) }}
+              <div class="item-label"
+                :class="{ '-selected': item.selected }">
+                <slot name="selectItem" v-bind:item="item.data">
+                  {{ getText(item.data) }}
+                </slot>
               </div>
             </div>
           </virtual-list>
@@ -426,7 +439,7 @@ $colorBorder: #dddddd;
   .controls {
     position: relative;
     display: flex;
-    height: $controlHeight;
+    min-height: $controlHeight;
     font-size: 1.5rem;
     line-height: 1.5;
     padding: 0.25rem $dropdownWidth 0.25rem 0.8rem;
@@ -495,12 +508,11 @@ $colorBorder: #dddddd;
     }
     .selection-list {
       position: relative;
-      max-height: $itemHeight * $itemAmountDisplayed;
       .select-item {
         display: flex;
         align-items: center;
         padding: 0 15px;
-        height: $itemHeight;
+        min-height: $itemHeight;
         .item-selecter {
           display: flex;
           .icon {
@@ -508,7 +520,8 @@ $colorBorder: #dddddd;
           }
         }
         .item-label {
-          display: block;
+          display: flex;
+          align-items: center;
           width: 100%;
           height: 100%;
           text-align: left;
@@ -516,7 +529,6 @@ $colorBorder: #dddddd;
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 1rem;
-          line-height: $itemHeight;
           &.-selected {
             color: $colorPurpleDark;
             font-weight: bold;
