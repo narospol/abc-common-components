@@ -386,7 +386,7 @@ export default {
         <div v-if="isLoading" class="spinner">
           <div class="clip"></div>
         </div>
-        <v-icon v-else :class="{ '-flip': isOpen }" name="dropdown" class="icon" scale="1.6" />
+        <svg v-else :class="{ '-flip': isOpen }" class="icon"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
       </div>
       <div v-if="isOpen" :style="{ top: `${positionOfSelection}px` }" class="selection">
         <div v-if="selectionItems.length === 0" class="selection-list-empty">
@@ -488,6 +488,9 @@ $colorBorder: #dddddd;
         color: darken($colorPurpleDark, 20);
       }
       .icon {
+        $iconSize: 25px;
+        width: $iconSize;
+        height: $iconSize;
         color: inherit;
         &.-flip {
           transform: rotate(-180deg);

@@ -1,12 +1,22 @@
 <script>
+import AbcSelect from "./components/AbcSelect";
+
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    AbcSelect
+  },
+  data() {
+    return {}
+  },
+  methods: {}
 };
 </script>
 
 <template>
   <div id="app">
     Abc common components
+    <br />
   </div>
 </template>
 

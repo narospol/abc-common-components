@@ -32,18 +32,19 @@ export default {
   },
   methods: {
     updateInputElement() {
+      /* eslint-disable */
       const el = this.$el;
       if (!el) return;
 
       let positionFromEnd = el.value.length - el.selectionEnd;
       el.value = this.currentValue;
       positionFromEnd = el.value.length - positionFromEnd;
-      const setSelectionRange = position =>
-        el.setSelectionRange(position, position);
+      const setSelectionRange = position => el.setSelectionRange(position, position);
       if (el === document.activeElement) {
         setSelectionRange(positionFromEnd);
         setTimeout(setSelectionRange.bind(this, positionFromEnd), 1); // Android Fix
       }
+      /* eslint-enable */
     },
     updateCurrentValue(value) {
       if (this.currencyFormat) {
