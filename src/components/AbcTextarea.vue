@@ -34,7 +34,7 @@ export default {
   color: black;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #bbbbbb;
+  border: 1px solid #ced4da;
   border-radius: 6px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   box-sizing: border-box;
