@@ -156,8 +156,8 @@ export default {
         let selected = currentValue !== undefined && compareUpperCase(currentValue, itemValue) // eslint-disable-line
         item.selected = selected;
       });
+      this.updateSelectedItem();
       this.updateSelectionItems();
-      this.selectedItems = this.selectionItems.filter(x => x.selected);
 
       if (this.selectedItems.length === 1) {
         // single selection mode & one item selected
