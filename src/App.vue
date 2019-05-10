@@ -1,13 +1,17 @@
 <script>
 import AbcSelect from "./components/AbcSelect";
+import AbcInput from "./components/AbcInput";
 
 export default {
   name: "app",
   components: {
-    AbcSelect
+    AbcSelect,
+    AbcInput,
   },
   data() {
-    return {}
+    return {
+      price: "0"
+    }
   },
   methods: {}
 };

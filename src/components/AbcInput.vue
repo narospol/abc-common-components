@@ -58,8 +58,10 @@ export default {
       }
     },
     setCurrencyFormat(value, precision) {
-      const str = value ? value.toString() : "";
-      const number = str.replace(/\D+/g, "") || "0";
+      const str = value !== undefined ? value.toString() : "";
+      const number = str.replace(/\D+/g, "") || "";
+      if (number === "") return "";
+      
       const currency = numbersToCurrency(number, precision);
       const parts = `${currency}`.split(".");
       let [integer, decimal] = parts;

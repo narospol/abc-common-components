@@ -10,8 +10,9 @@ export const addThousandSeparator = (integer, separator = ",") => {
 
 export const unFormat = (value, precision = 0) => {
   const negative = value.indexOf("-") >= 0 ? -1 : 1;
-  const str = value ? value.toString() : "";
-  const numbers = str.replace(/\D+/g, "") || "0";
+  const str = value !== undefined ? value.toString() : "";
+  const numbers = str.replace(/\D+/g, "") || "";
+  if (numbers === "") return "";
   const currency = numbersToCurrency(numbers, precision);
   return parseFloat(currency) * negative;
 };
