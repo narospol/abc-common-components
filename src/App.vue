@@ -1,16 +1,23 @@
 <script>
 import AbcSelect from "./components/AbcSelect";
 import AbcInput from "./components/AbcInput";
+import AlertModal from "./components-testing/AlertModal";
 
 export default {
   name: "app",
   components: {
     AbcSelect,
     AbcInput,
+    AlertModal
   },
   data() {
     return {
-      price: "0"
+      price: "0",
+      alert: {
+        show: false,
+        title: "Alert Modal",
+        subtitle: "test backdrop clickable"
+      }
     }
   },
   methods: {}
@@ -21,6 +28,7 @@ export default {
   <div id="app">
     Abc common components
     <br />
+    <alert-modal :data="alert" />
   </div>
 </template>
 

@@ -11,8 +11,15 @@ export default {
     }
   },
   methods: {
-    onCloseClicked() {
-      this.$emit("closed");
+    onBackdropClicked() {
+      this.$emit("backdropClicked");
+    },
+    onContentBodyClicked(event) {
+      const targetElement = event.target;
+      const [contentNode] = this.$slots.default;
+      const { elm: contentElement = null } = contentNode || {};
+      const isSameElement = contentElement && targetElement && contentElement === targetElement;
+      isSameElement && this.onBackdropClicked();
     }
   }
 };
@@ -20,14 +27,9 @@ export default {
 
 <template>
   <transition name="modal">
-    <div
-      v-show="show"
-      :style="{ zIndex }"
-      class="modal-mask"
-      @click="onCloseClicked"
-    >
-      <div class="modal" @click.stop>
-        <div class="modal-guts">
+    <div v-show="show" :style="{ zIndex }" class="modal-mask">
+      <div class="modal">
+        <div class="modal-guts" @click="onContentBodyClicked">
           <slot />
         </div>
       </div>
@@ -48,16 +50,9 @@ export default {
   display: table;
   transition: opacity 0.3s ease;
   .modal {
-    // display: table-cell;
-    // vertical-align: middle;
-
     display: block;
     width: 100%;
     height: 100%;
-    // width: 600px;
-    // max-width: 100%;
-    // height: 400px;
-    // max-height: 100%;
     position: fixed;
     z-index: 100;
     left: 50%;
