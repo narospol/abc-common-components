@@ -16,10 +16,9 @@ export default {
     },
     onContentBodyClicked(event) {
       const targetElement = event.target;
-      const [contentNode] = this.$slots.default;
-      const { elm: contentElement = null } = contentNode || {};
-      const isSameElement = contentElement && targetElement && contentElement === targetElement;
-      isSameElement && this.onBackdropClicked();
+      const backdropElement = this.$refs.backdrop;
+      const isBackdropClick = targetElement === backdropElement;
+      isBackdropClick && this.onBackdropClicked();
     }
   }
 };
@@ -29,7 +28,7 @@ export default {
   <transition name="modal">
     <div v-show="show" :style="{ zIndex }" class="modal-mask">
       <div class="modal">
-        <div class="modal-guts" @click="onContentBodyClicked">
+        <div ref="backdrop" class="modal-guts" @click="onContentBodyClicked">
           <slot />
         </div>
       </div>
